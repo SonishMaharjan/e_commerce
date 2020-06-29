@@ -21,12 +21,13 @@ provider.setCustomParameters({ promt: "select_account" });
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
-  // console.log("haha");
-  // console.log(firestore.doc("users/1231kjl"));
 
+  // return reference like path of data but not data
   const userRef = firestore.doc(`users/${userAuth.uid}`);
 
+  //return actual snapshot of data , has key exist which refers if data is saved in db or not
   const snapShot = await userRef.get();
+  console.log(snapShot);
 
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;

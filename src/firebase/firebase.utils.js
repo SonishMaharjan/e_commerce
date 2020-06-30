@@ -27,8 +27,9 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   //return actual snapshot of data , has key exist which refers if data is saved in db or not
   const snapShot = await userRef.get();
-  console.log(snapShot);
+  // console.log(snapShot);
 
+  //if user does not exist creat new user of database
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -39,7 +40,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
       console.log("error creating user", error.message);
     }
   }
-  // console.log(snapShot);
   return userRef;
 };
 

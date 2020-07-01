@@ -10,49 +10,47 @@ import SignInAndSignOut from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.co
 
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
+import { connect } from "react-redux";
 
+import { setCurrentUser } from "./redux/user/user.action";
+
+class App extends React.Component {
+  // now no need of set constructor() ... redux handles it
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    //setCurrentUser is received in this.props from connect and dispatch of redux (Look EOF)
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       //if user -> signed in else not signed in
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         //snapshot contina actual data in snapshot.data
-        //subscribeing for any change of data
+        // subscribeing for any change of data
         userRef.onSnapshot((snapShot) => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data(),
-            },
+          //onSnapshot is async: so talako setCurrentUser is called after setCurrentUser(userAuth){tala xa};
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data(),
           });
         });
       }
 
-      this.setState({ currentUser: userAuth });
+      // this.setState({ currentUser: userAuth }); now for redux use setCurrentUser
+      setCurrentUser(userAuth);
     });
-
-    // console.log(this.unsubscribeFromAuth);
   }
 
   componentWillUnmount() {
-    //
     this.unsubscribeFromAuth();
   }
 
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser}> </Header>
+        <Header> </Header>
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
@@ -63,4 +61,13 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  //es ma jj haleko mathi this.props garera access garna milxa..
+  return {
+    //setCurrentUser method return object { type: data, payload: data}
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)), //pass action object(object having type and payload attributes) in dispatch
+  };
+};
+
+//fist arg is null as we dont need any state in this compoent
+export default connect(null, mapDispatchToProps)(App);

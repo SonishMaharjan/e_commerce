@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { connect } from "react-redux";
+
 import { auth } from "../../firebase/firebase.utils";
 
 import "./header.styles.scss";
@@ -12,7 +14,6 @@ const Header = ({ currentUser }) => (
     <Link className="logo-container" to="/">
       <Logo className="logo"></Logo>
     </Link>
-
     <div className="options">
       <Link className="option" to="/shop">
         SHOP
@@ -32,5 +33,10 @@ const Header = ({ currentUser }) => (
     </div>
   </div>
 );
+//esa ma jj rentrurn hunxat tyo this.prop ma aaunx
+//state is top level reducer // root reducer
+const mapStateToProps = (state) => {
+  return { currentUser: state.user.currentUser };
+};
 
-export default Header;
+export default connect(mapStateToProps)(Header);

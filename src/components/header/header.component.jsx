@@ -9,7 +9,10 @@ import "./header.styles.scss";
 
 import { ReactComponent as Logo } from "../../assets/4.3 crown.svg.svg";
 
-const Header = ({ currentUser }) => (
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+
+const Header = ({ currentUser, hidden }) => (
   <div className="header">
     <Link className="logo-container" to="/">
       <Logo className="logo"></Logo>
@@ -30,13 +33,15 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
+    {hidden ? null : <CartDropdown></CartDropdown>}
   </div>
 );
 //esa ma jj rentrurn hunxat tyo this.prop ma aaunx
 //state is top level reducer // root reducer
-const mapStateToProps = (state) => {
-  return { currentUser: state.user.currentUser };
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => {
+  return { currentUser, hidden };
 };
 
 export default connect(mapStateToProps)(Header);

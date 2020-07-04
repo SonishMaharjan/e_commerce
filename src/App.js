@@ -7,6 +7,7 @@ import Header from "./components/header/header.component";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component.jsx";
 import SignInAndSignOut from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import { createStructuredSelector } from "reselect";
 
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
@@ -14,6 +15,7 @@ import { connect } from "react-redux";
 
 import { setCurrentUser } from "./redux/user/user.action";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import { selectCurrentUser } from "./redux/user/user.selectors";
 
 class App extends React.Component {
   // now no need of set constructor() ... redux handles it
@@ -80,7 +82,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const mapStateToProps = ({ user }) => ({ currentUser: user.currentUser });
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 
 //fist arg is null as we dont need any state in this compoent
 export default connect(mapStateToProps, mapDispatchToProps)(App);

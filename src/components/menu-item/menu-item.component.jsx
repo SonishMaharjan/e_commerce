@@ -21,5 +21,5 @@ const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
   </div>
 );
 
-//withRouter allows you to access history in props
+//withRouter allows you to access history(path match histor etc) in props
 export default withRouter(MenuItem);

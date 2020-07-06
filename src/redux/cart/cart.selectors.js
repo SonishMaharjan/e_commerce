@@ -1,5 +1,8 @@
+//we use reslect becuause we dont want to render all state even when only some state changes..
 import { createSelector } from "reselect";
 
+//state value is automaitcally passed while using createStructuredSelector -> look into app.js
+//input selectors
 const selectCart = (state) => state.cart;
 
 export const selectCartItems = createSelector(

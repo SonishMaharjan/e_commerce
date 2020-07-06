@@ -87,6 +87,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+//const mapStateToProps = (state) => ({currentUser: selectCurrentUser,})
+//but by using createStructuredSelector , state is automatically passed.
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
